@@ -1,0 +1,15 @@
+/* ./src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bg {
+    background: radial-gradient(ellipse, #0a345c 1%, #001427 100%);
+}
+
+.body-background {
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
