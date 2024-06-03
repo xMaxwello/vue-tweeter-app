@@ -2,8 +2,27 @@
 import {logout} from "../api/apiLogin.ts";
 import router from "../router";
 import {useMyAccountStore} from "../stores/myAccountStore";
+import {onMounted, ref} from "vue";
+import {getAuthenticatedUser} from "../api/apiUser.ts";
 
 const myAccountStore = useMyAccountStore();
+const myAccount = ref(null);
+
+const fetchUser = async () => {
+  try {
+    const user = await getAuthenticatedUser();
+    if (user) {
+      myAccountStore.setMyAccount(user);
+      myAccount.value = user;
+    }
+  } catch (error) {
+    console.error("Failed to fetch user data:", error);
+  }
+};
+
+onMounted(() => {
+  fetchUser();
+});
 
 
 const signOut = () => {
@@ -26,6 +45,10 @@ const signOut = () => {
       <router-link to="settings" class="block py-2.5 px-4 rounded-l-[10px] transition duration-200 hover:bg-blue-800">Einstellungen</router-link>
       <button @click="signOut" class="block py-2.5 px-4 rounded-l-[10px] transition duration-200 hover:bg-blue-800">Abmelden</button>
     </nav>
+
+    <div>
+      <p>Angemeldet als:<br/>{{myAccount?.firstName}} {{myAccount?.lastName}}</p>
+    </div>
 
 
   </div>

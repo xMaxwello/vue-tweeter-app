@@ -10,6 +10,7 @@ export default {
       colors: {
         'main': "#001427",
         'homeCard': "#00ACDF",
+        'passwordCard': "#002643",
       }
     },
   },

@@ -2,11 +2,11 @@ import axios from 'axios';
 import { apiUrl, apiConfig } from "./apiConfig";
 import MyAccount from "../types/myAccount.ts";
 
-export const getCsrfCookie = async () => {
+const getCsrfCookie = async () => {
     await axios.get(`${apiUrl}/csrf-cookie`, apiConfig);
 }
 
-export const authenticateUser = async (email: string, password: string) => {
+const authenticateUser = async (email: string, password: string) => {
     try {
         const response = await axios.post(`${apiUrl}/auth/login`, { email, password }, apiConfig);
         if(response.status == 200){
@@ -30,10 +30,16 @@ export const authenticateUser = async (email: string, password: string) => {
     }
 }
 
-export const logout = async (): Promise<boolean> => {
+const logout = async (): Promise<boolean> => {
     const response = await axios
             .post(`${apiUrl}/auth/logout`, {}, apiConfig)
             .catch(() => null);
 
     return (response !== null && response.status === 204);
+}
+
+export {
+    getCsrfCookie,
+    authenticateUser,
+    logout
 }

@@ -16,7 +16,7 @@ const login = async () => {
   try {
     const isAuthenticated = await authenticateUser(email.value, password.value);
     if (isAuthenticated) {
-      await router.push("/");
+      await router.push("home");
     } else {
       authErr.value = "Login fehlgeschlagen";
     }
