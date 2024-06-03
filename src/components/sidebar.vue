@@ -1,4 +1,16 @@
 <script setup lang="ts">
+import {logout} from "../api/apiLogin.ts";
+import router from "../router";
+import {useMyAccountStore} from "../stores/myAccountStore";
+
+const myAccountStore = useMyAccountStore();
+
+
+const signOut = () => {
+  logout();
+  myAccountStore.deleteMyAccount();
+  router.push("/login");
+}
 
 </script>
 
@@ -12,7 +24,9 @@
       <router-link to="/" class="block py-2.5 px-4 rounded-l-[10px] transition duration-200 hover:bg-blue-800">Home</router-link>
       <router-link to="" class="block py-2.5 px-4 rounded-l-[10px] transition duration-200 hover:bg-blue-800">Meine Beiträge</router-link>
       <router-link to="" class="block py-2.5 px-4 rounded-l-[10px] transition duration-200 hover:bg-blue-800">Einstellungen</router-link>
-      <router-link to="login" class="block py-2.5 px-4 rounded-l-[10px] transition duration-200 hover:bg-blue-800">Abmelden</router-link>
+      <button @click="signOut" class="block py-2.5 px-4 rounded-l-[10px] transition duration-200 hover:bg-blue-800">Abmelden</button>
     </nav>
+
+
   </div>
 </template>
