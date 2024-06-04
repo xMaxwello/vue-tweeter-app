@@ -1,11 +1,18 @@
 <script setup lang="ts">
+import {useMyAccountStore} from "../stores/myAccountStore.ts";
+import {ref} from "vue";
+import MyAccount from "../types/myAccount.ts";
 
+const myAccountStore = useMyAccountStore();
+const myAccount = ref<MyAccount|null>(myAccountStore.getMyAccount());
+const profilePicture = ref(myAccount.value?.avatarUrl);
 </script>
 
 <template>
 
     <div class="mt-3 w-full inline-flex">
-      <div class="w-[40px] h-[40px] flex-none bg-white rounded-full" />
+      <img class="w-[40px] h-[40px] rounded-full" v-if="profilePicture" :src="profilePicture" alt="Profile Picture">
+      <div v-if="!profilePicture" class="w-[40px] h-[40px] flex-none bg-white rounded-full" />
       <div class=" pl-4 w-full flex flex-col">
         <textarea placeholder="Was gibt es Neues?" class="bg-transparent text-base text-white outline-none" maxlength="200"></textarea>
         <div class="mt-2 md:mt-3 lg:mt-4 flex justify-between items-center">
