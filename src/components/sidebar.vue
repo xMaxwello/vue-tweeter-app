@@ -2,27 +2,25 @@
 import {logout} from "../api/apiLogin.ts";
 import router from "../router";
 import {useMyAccountStore} from "../stores/myAccountStore";
-import {onMounted, ref} from "vue";
+import {onBeforeMount, ref} from "vue";
 import {getAuthenticatedUser} from "../api/apiUser.ts";
+import MyAccount from "../types/myAccount.ts";
 
 const myAccountStore = useMyAccountStore();
-const myAccount = ref(null);
+const myAccount = ref<MyAccount|null>(myAccountStore.getMyAccount());
 
-const fetchUser = async () => {
-  try {
-    const user = await getAuthenticatedUser();
-    if (user) {
-      myAccountStore.setMyAccount(user);
-      myAccount.value = user;
-    }
-  } catch (error) {
-    console.error("Failed to fetch user data:", error);
+const firstName = ref(myAccount.value?.firstName);
+const lastName = ref(myAccount.value?.lastName);
+
+onBeforeMount(async () => {
+  const res = await getAuthenticatedUser();
+  if(res){
+    myAccountStore.setMyAccount(res);
+    myAccount.value = myAccountStore.getMyAccount();
+    firstName.value = myAccount.value?.firstName;
+    lastName.value = myAccount.value?.lastName;
   }
-};
-
-onMounted(() => {
-  fetchUser();
-});
+})
 
 
 const signOut = () => {
@@ -47,7 +45,7 @@ const signOut = () => {
     </nav>
 
     <div>
-      <p>Angemeldet als:<br/>{{myAccount?.firstName}} {{myAccount?.lastName}}</p>
+      <p>Angemeldet als:<br/>{{firstName}} {{lastName}}</p>
     </div>
 
 
