@@ -22,44 +22,37 @@ const getAuthenticatedUser = async () => {
 }
 
 const updateMyAccount = async (
-    firstName:string|null,
-    lastName:string|null,
-    email:string|null,
-    emailConfirmation:string|null,
-    password:string|null,
-    passwordConfirmation:string|null,
-    currentPassword:string|null
-) => {
-    let updated;
+    firstName: string|null,
+    lastName: string|null,
+    email: string|null,
+    emailConfirmation: string|null,
+    password: string|null,
+    passwordConfirmation: string|null,
+    currentPassword: string|null
+): Promise<MyAccount|null> => {
+    const updated: UserProfileUpdate = {};
     if (firstName !== null) {
-        updated = {
-            'first_name': firstName,
-        }
+        updated['first_name'] = firstName;
     }
-    else if (lastName !== null) {
-        updated = {
-            'last_name': lastName,
-        }
-    }else if (email && emailConfirmation){
-        updated = {
-            'email': email,
-            'email_confirmation': emailConfirmation,
-            'password': password,
-        };
-    }else if (password && passwordConfirmation && currentPassword){
-        updated = {
-            'password': password,
-            'password_confirmation': passwordConfirmation,
-            'current_password': currentPassword,
-        };
+    if (lastName !== null) {
+        updated['last_name'] = lastName;
     }
-    const res = await axios
-        .put(`${apiUrl}/auth/profile`, updated,apiConfig)
+    if (email !== null && emailConfirmation !== null) {
+        updated['email'] = email;
+        updated['email_confirmation'] = emailConfirmation;
+    }
+    if (password !== null && passwordConfirmation !== null && currentPassword !== null) {
+        updated['password'] = password;
+        updated['password_confirmation'] = passwordConfirmation;
+        updated['current_password'] = currentPassword;
+    }
+
+    const res = await axios.put(`${apiUrl}/auth/profile`, updated, apiConfig)
         .catch((error) => {
             throw new authError(error.response.data.message);
         });
 
-    if(res.status == 200){
+    if (res.status === 200) {
         return new MyAccount(
             res.data.data.id,
             res.data.data.full_name,
@@ -96,8 +89,22 @@ const updateMyProfilePicture = async (image: File | null):Promise<string|null> =
     return null;
 }
 
+const deleteMyProfilePicture = async () => {
+    try {
+        const response = await axios.delete(`${apiUrl}/auth/profile-image`, apiConfig);
+        if (response.status === 200) {
+            console.log("Profile picture deleted successfully.");
+            return true;
+        }
+    } catch (error) {
+        console.error("Failed to delete profile picture:", error);
+        return false;
+    }
+};
+
 export {
     getAuthenticatedUser,
     updateMyAccount,
     updateMyProfilePicture,
+    deleteMyProfilePicture,
 }
