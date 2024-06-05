@@ -1,11 +1,55 @@
 <script setup lang="ts">
-import MakeTweet from "../components/makeTweet.vue";
+import makeTweet from "../components/makeTweet.vue";
+import tweetContent from "../components/tweetContent.vue";
+import {fetchTweets} from "../api/apiTweet.ts";
+import {onBeforeUnmount, onMounted, ref} from "vue";
+import loadSpinner from "../components/loadSpinner.vue";
 
+
+const tweets = ref([]);
+const currentPage = ref(1);
+const isLoading = ref(false);
+const hasMoreTweets = ref(true);
+
+async function loadTweets() {
+  if (!isLoading.value && hasMoreTweets.value) {
+    isLoading.value = true;
+    const newTweets = await fetchTweets(currentPage.value);
+    if (newTweets && newTweets.length > 0) {
+      tweets.value = newTweets.map(tweet => ({
+        ...tweet,
+        postDate: tweet.created_at,
+        likesCount: tweet.likes_count,
+        commentsCount: tweet.comments_count
+      }));
+      currentPage.value++;
+    } else {
+      hasMoreTweets.value = false; // No more tweets to load
+    }
+    isLoading.value = false;
+  }
+}
+onMounted(loadTweets);
+
+function handleScroll() {
+  const { scrollTop, offsetHeight, scrollHeight } = document.documentElement;
+  if (scrollTop + window.innerHeight - 300 >= scrollHeight - offsetHeight) {
+    loadTweets();
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
 </script>
 
 <template>
   <div class="flex justify-center pt-24">
-    <div class="w-2/5 h-screen pt-5 px-5 bg-homeCard bg-opacity-5 rounded-t-[10px]">
+    <div class="w-2/5 h-full pt-3 px-5 bg-homeCard bg-opacity-5 rounded-t-[10px]">
       <div class="w-full flex justify-between items-center">
         <h1 class="text-white text-base font-medium">Home</h1>
         <div class="w-60 h-10 rounded-md bg-homeCard bg-opacity-5 border-2 border-transparent flex flex-row-reverse items-center px-2">
@@ -17,9 +61,11 @@ import MakeTweet from "../components/makeTweet.vue";
           </svg>
         </div>
       </div>
-      <hr class="w-full mt-2 md:mt-4 border-white border-opacity-10"/>
-      <MakeTweet/>
-      <hr class="w-full mt-2 md:mt-4 border-white border-opacity-10"/>
+      <hr class="w-full mt-3 border-white border-opacity-10"/>
+      <makeTweet/>
+      <hr class="w-full mt-4 border-white border-opacity-10"/>
+      <tweetContent :tweets="tweets" />
+      <loadSpinner v-if="isLoading" class=""/>
 
     </div>
   </div>
