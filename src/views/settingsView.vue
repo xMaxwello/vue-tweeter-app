@@ -145,7 +145,7 @@ const handleProfileEmail = async () => {
 
 <template>
   <div class="flex justify-center pt-24">
-    <div class="w-2/5 h-screen pt-5 px-5 bg-homeCard bg-opacity-5 rounded-t-[10px]">
+    <div class="w-2/5 h-auto py-5 px-5 bg-homeCard bg-opacity-5 rounded-[10px]">
       <div class="w-full flex justify-between items-center">
         <h1 class="text-white text-base font-medium">Einstellungen</h1>
       </div>
