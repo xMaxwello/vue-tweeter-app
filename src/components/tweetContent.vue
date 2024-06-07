@@ -60,8 +60,8 @@ const handleLikeToggle = async () => {
 <template>
     <hr class="w-full mt-4 border-white border-opacity-10"/>
     <div class="mt-3 w-full flex">
-      <div class="w-{40px] h-[40px]">
-        <img class="w-[40px] h-[40px] rounded-full mr-4" v-if="profilePicURL" :src="profilePicURL" alt="Profile Picture">
+      <div class="w-{40px] h-[40px] flex-shrink-0">
+        <img class="w-[40px] h-[40px] object-cover rounded-full mr-4" v-if="profilePicURL" :src="profilePicURL" alt="Profile Picture">
         <div v-if="!profilePicURL" class="w-[40px] h-[40px] mr-4 bg-white rounded-full"></div>
       </div>
 
