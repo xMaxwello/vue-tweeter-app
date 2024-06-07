@@ -6,7 +6,7 @@ import {useRoute} from "vue-router";
 import {TweetDetail} from "../types/tweetDetails.ts";
 
 const route = useRoute();
-const tweetDetail = ref<TweetDetail | null>(null);
+let tweetDetail = ref<TweetDetail | null>(null);
 
 onMounted(async () => {
   const tweetId = route.params.id;

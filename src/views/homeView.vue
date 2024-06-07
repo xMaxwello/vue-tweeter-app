@@ -4,7 +4,7 @@ import tweetContent from "../components/tweetContent.vue";
 import {fetchTweets} from "../api/apiTweet.ts";
 import {onBeforeUnmount, onMounted, reactive, ref} from "vue";
 import loadSpinner from "../components/loadSpinner.vue";
-import Tweet from "../types/userTweets.ts";
+import {Tweet} from "../types/userTweets.ts";
 import router from "../router";
 
 
@@ -18,21 +18,21 @@ const loadTweets = async () => {
   if (isLoading.value || !hasMoreTweets.value) return;
 
   isLoading.value = true;
-  const newTweets = await fetchTweets(currentPage.value);
-  setTimeout(() => {
+  try {
+    const newTweets = await fetchTweets(currentPage.value);
     if (newTweets && newTweets.length > 0) {
-      tweets = [...tweets, ...newTweets.map(tweet => ({
-        ...tweet,
-        postDate: tweet.created_at,
-        likesCount: tweet.likes_count,
-        commentsCount: tweet.comments_count
-      }))];
+      tweets.push(...newTweets.map(tweet => ({
+        ...tweet
+      })));
       currentPage.value++;
     } else {
       hasMoreTweets.value = false;
     }
+  } catch (error) {
+    console.error("Failed to load tweets:", error);
+  } finally {
     isLoading.value = false;
-  }, 1000);
+  }
 };
 onMounted(loadTweets);
 
@@ -77,12 +77,11 @@ function navigateToTweetDetails(tweetId) {
             :id="tweet.id"
             :profilePicURL="tweet.user.avatar_url"
             :name="tweet.user.full_name"
-            :time="tweet.postDate"
+            :time="tweet.created_at"
             :text="tweet.body"
-            :imgURL="tweet.imageUrl"
-            :likes="tweet.likesCount"
-            :isLiked="tweet.isLiked"
-            :comments="tweet.commentsCount"
+            :likes="tweet.likes_count"
+            :isLiked="tweet.is_liked"
+            :comments="tweet.comments_count"
             @openTweet="navigateToTweetDetails"
         />
       </div>
