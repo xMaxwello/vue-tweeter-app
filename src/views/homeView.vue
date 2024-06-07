@@ -5,6 +5,8 @@ import {fetchTweets} from "../api/apiTweet.ts";
 import {onBeforeUnmount, onMounted, reactive, ref} from "vue";
 import loadSpinner from "../components/loadSpinner.vue";
 import Tweet from "../types/userTweets.ts";
+import router from "../router";
+
 
 
 const currentPage = ref(1);
@@ -48,12 +50,15 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll);
 });
+
+function navigateToTweetDetails(tweetId) {
+  router.push({name: 'TweetDetails', params: {id: tweetId}});
+}
 </script>
 
 <template>
   <div class="flex justify-center pt-24">
     <div class="w-2/5 h-full pt-3 pb-4 px-5 bg-homeCard bg-opacity-5 rounded-t-[10px]">
-<!--      <tweetDetails/>-->
       <div class="w-full flex justify-between items-center">
         <h1 class="text-white text-base font-medium">Home</h1>
         <div class="w-60 h-10 rounded-md bg-homeCard bg-opacity-5 border-2 border-transparent flex flex-row-reverse items-center px-2">
@@ -78,6 +83,7 @@ onBeforeUnmount(() => {
             :likes="tweet.likesCount"
             :isLiked="tweet.isLiked"
             :comments="tweet.commentsCount"
+            @openTweet="navigateToTweetDetails"
         />
       </div>
       <loadSpinner v-if="isLoading" class="pt-10"/>

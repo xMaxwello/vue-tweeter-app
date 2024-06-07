@@ -2,12 +2,20 @@ import {createRouter, createWebHistory} from 'vue-router';
 import homeView from "../views/homeView.vue";
 import loginView from "../views/loginView.vue";
 import settingsView from "../views/settingsView.vue";
+import TweetDetails from "../views/tweetView.vue";
 
 const routes = [
     {
         'path': '/home',
         'name': 'home',
         'component': homeView,
+    },
+
+    {
+        path: '/tweet/:id',
+        name: 'TweetDetails',
+        component: TweetDetails,
+        props: true
     },
 
     {
