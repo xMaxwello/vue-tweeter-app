@@ -13,18 +13,25 @@ const hasMoreTweets = ref(true);
 let tweets = reactive<Tweet[]>([]);
 
 const loadTweets = async () => {
+  if (isLoading.value || !hasMoreTweets.value) return;
+
   isLoading.value = true;
-  const postsFromApi: Tweet[] | null = await fetchTweets(currentPage.value);
-  if(postsFromApi == null){
-    return;
-  }else{
-    tweets.push(...postsFromApi);
-    if(postsFromApi.length < 20){
-      hasMoreTweets.value = true;
+  const newTweets = await fetchTweets(currentPage.value);
+  setTimeout(() => {
+    if (newTweets && newTweets.length > 0) {
+      tweets = [...tweets, ...newTweets.map(tweet => ({
+        ...tweet,
+        postDate: tweet.created_at,
+        likesCount: tweet.likes_count,
+        commentsCount: tweet.comments_count
+      }))];
+      currentPage.value++;
+    } else {
+      hasMoreTweets.value = false;
     }
-  }
-  isLoading.value = false;
-}
+    isLoading.value = false;
+  }, 1000);
+};
 onMounted(loadTweets);
 
 function handleScroll() {
