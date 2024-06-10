@@ -13,16 +13,6 @@ const fetchTweets = async (page: number):Promise<Tweet[] | null> => {
     return null;
 }
 
-const toggleLikeTweet = async (id:number):Promise<boolean|null> => {
-    if(id != null){
-        const res = await axios.post(`${apiUrl}/tweets/${id}/likes`,{},apiConfig)
-        if(res.status == 200){
-            return res.data.data;
-        }
-    }
-    return null;
-}
-
 const fetchTweetDetails = async (id: number): Promise<TweetDetail | null> => {
     if(id != null) {
         const response = await axios.get(`${apiUrl}/tweets/${id}`, apiConfig);
@@ -33,8 +23,39 @@ const fetchTweetDetails = async (id: number): Promise<TweetDetail | null> => {
     return null;
 }
 
+const postComment = async (id:number, body: String):Promise<Comment|null> => {
+    const res = await axios.post(`${apiUrl}/tweets/${id}/comments`, {body},apiConfig)
+    if(res.status == 201){
+        return res.data.data;
+    }
+    return null;
+}
+
+const toggleLikeTweet = async (id:number):Promise<boolean|null> => {
+    if(id != null){
+        const res = await axios.post(`${apiUrl}/tweets/${id}/likes`,{},apiConfig)
+        if(res.status == 200){
+            return res.data.data;
+        }
+    }
+    return null;
+}
+
+const toggleLikeComment = async (id:number):Promise<boolean|null> => {
+    if(id != null){
+        const res = await axios.post(`${apiUrl}/comments/${id}/likes`,{},apiConfig)
+        if(res.status == 200){
+            return res.data.data;
+        }
+    }
+    return null;
+}
+
+
 export {
     fetchTweets,
     toggleLikeTweet,
-    fetchTweetDetails
+    toggleLikeComment,
+    fetchTweetDetails,
+    postComment,
 }
