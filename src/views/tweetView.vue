@@ -71,9 +71,9 @@ const handleLikeCommentToggle = async (comment) => {
 
           <!-- Comments Box -->
           <div class="pt-20 w-full flex">
-            <div class="w-[40px] h-[40px]">
-              <img class="w-[40px] h-[40px] rounded-full" v-if="profilePicture" :src="profilePicture" alt="Profile Picture">
-              <div v-if="!profilePicture" class="w-[40px] h-[40px] bg-white rounded-full"></div>
+            <div class="w-[40px] h-[40px] flex-shrink-0">
+              <img class="w-[40px] h-[40px] rounded-full" v-if="tweetDetail.user.avatar_url" :src="tweetDetail.user.avatar_url" alt="Profile Picture">
+              <div v-if="!tweetDetail.user.avatar_url" class="w-[40px] h-[40px] bg-white rounded-full"></div>
             </div>
             <div class="flex flex-col flex-grow pl-4">
               <textarea v-model="newComment" placeholder="Kommentiere den Beitrag" class="bg-transparent text-base text-white outline-none w-full" maxlength="200"></textarea>
@@ -93,9 +93,9 @@ const handleLikeCommentToggle = async (comment) => {
             </div>
             <div v-for="comment in tweetDetail.comments" :key="comment.id">
               <div class="flex mt-3">
-                <div class="w-[40px] h-[40px]">
-                  <img class="w-[40px] h-[40px] rounded-full mr-4" v-if="profilePicURL" :src="profilePicURL" alt="Profile Picture">
-                  <div v-if="!profilePicURL" class="w-[40px] h-[40px] mr-4 bg-white rounded-full"></div>
+                <div class="w-[40px] h-[40px] flex-shrink-0">
+                  <img class="w-[40px] h-[40px] rounded-full mr-4" v-if="comment.user.avatar_url" :src="comment.user.avatar_url" alt="Profile Picture">
+                  <div v-if="!comment.user.avatar_url" class="w-[40px] h-[40px] mr-4 bg-white rounded-full"></div>
                 </div>
 
                 <div class="flex flex-col flex-grow pl-4">
