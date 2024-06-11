@@ -58,7 +58,7 @@ function navigateToTweetDetails(tweetId) {
 
 <template>
   <div class="flex justify-center pt-24">
-    <div class="w-2/5 h-full pt-3 pb-4 px-5 bg-homeCard bg-opacity-5 rounded-t-[10px]">
+    <div class="w-[751px] h-full pt-3 pb-4 px-5 bg-homeCard bg-opacity-5 rounded-t-[10px]">
       <div class="w-full flex justify-between items-center">
         <h1 class="text-white text-base font-medium">Home</h1>
         <div class="w-60 h-10 rounded-md bg-homeCard bg-opacity-5 border-2 border-transparent flex flex-row-reverse items-center px-2">

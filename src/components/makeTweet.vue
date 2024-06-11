@@ -8,8 +8,10 @@ const myAccountStore = useMyAccountStore();
 const myAccount = ref<MyAccount|null>(myAccountStore.getMyAccount());
 const profilePicture = ref(myAccount.value?.avatarUrl);
 const tweetText = ref('');
-const fileInput = ref(null);
-const selectedFile = ref<File | null>(null);
+const fileInput = ref('');
+const selectedImage = ref<File | null>(null);
+const previewImage = ref('');
+
 
 const triggerFileInput = () => {
   fileInput.value.click();
@@ -17,22 +19,33 @@ const triggerFileInput = () => {
 
 const handleFileChange = (event) => {
   if (event.target.files.length > 0) {
-    selectedFile.value = event.target.files[0];
+    selectedImage.value = event.target.files[0];
+    if (selectedImage.value) {
+      previewImage.value = URL.createObjectURL(selectedImage.value);
+    }
+  }
+};
+
+const removeImage = () => {
+  previewImage.value = '';
+  selectedImage.value = null;
+  if (fileInput.value) {
+    fileInput.value = '';
   }
 };
 
 const handlePostTweet = async () => {
   if (!tweetText.value.trim()) {
-    alert("Please enter some text for the tweet.");
     return;
   }
   try {
-    const tweet = await postTweet(tweetText.value, selectedFile.value);
+    const tweet = await postTweet(tweetText.value, selectedImage.value);
     if (tweet) {
       console.log('New tweet posted:', tweet);
       tweetText.value = '';
-      selectedFile.value = null;
-      fileInput.value.value = '';
+      previewImage.value = '';
+      selectedImage.value = null;
+      fileInput.value = '';
     }
   } catch (error) {
     console.error('Failed to post tweet:', error);
@@ -46,8 +59,16 @@ const handlePostTweet = async () => {
     <img class="w-[40px] h-[40px] rounded-full" v-if="profilePicture" :src="profilePicture" alt="Profile Picture">
     <div v-if="!profilePicture" class="w-[40px] h-[40px] flex-none bg-white rounded-full" />
     <div class="pl-4 w-full flex flex-col">
-      <textarea v-model="tweetText" placeholder="Was gibt es Neues?" class="bg-transparent text-base text-white outline-none" maxlength="200"></textarea>
-      <input type="file" ref="fileInput" @change="handleFileChange" hidden>
+      <textarea v-model="tweetText" placeholder="Was gibt es Neues?" class="bg-transparent resize-none h-[100px] text-base text-white outline-none" maxlength="200"></textarea>
+      <input type="file" ref="fileInput" accept="image/*" @change="handleFileChange" hidden alt="">
+      <div v-if="previewImage" class="relative">
+        <img class="w-max h-[100px] rounded-md" :src="previewImage" alt="Selected Image">
+        <button @click="removeImage" class="bg-red-700 rounded-full h-4 w-4 absolute top-0 left-0 -translate-x-1/4 -translate-y-1/4">
+          <svg class="w-4 h-4 flex items-center justify-center" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9.5 3.205L8.795 2.5L6 5.295L3.205 2.5L2.5 3.205L5.295 6L2.5 8.795L3.205 9.5L6 6.705L8.795 9.5L9.5 8.795L6.705 6L9.5 3.205Z" fill="white"/>
+          </svg>
+        </button>
+      </div>
       <div class="mt-2 md:mt-3 lg:mt-4 flex justify-between items-center">
         <div class="flex">
           <button @click="triggerFileInput" class="inline-flex items-center text-white outline-none transition-all">

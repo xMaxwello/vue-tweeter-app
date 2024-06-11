@@ -46,7 +46,7 @@ const handleLikeCommentToggle = async (comment) => {
 <template>
   <div v-if="tweetDetail">
     <div class="flex justify-center py-24">
-      <div class="w-2/5 h-auto pt-3 pb-4 px-5 bg-homeCard bg-opacity-5 rounded-[10px]">
+      <div class="w-[751px] h-auto pt-3 pb-4 px-5 bg-homeCard bg-opacity-5 rounded-[10px]">
         <div class="w-full flex flex-col">
           <div class="flex justify-start items-center">
             <button @click="$router.push('/home')" class="text-white text-base font-medium flex items-center">
@@ -77,7 +77,7 @@ const handleLikeCommentToggle = async (comment) => {
               <div v-if="!tweetDetail.user.avatar_url" class="w-[40px] h-[40px] bg-white rounded-full"></div>
             </div>
             <div class="flex flex-col flex-grow pl-4">
-              <textarea v-model="newComment" placeholder="Kommentiere den Beitrag" class="bg-transparent text-base text-white outline-none w-full" maxlength="200"></textarea>
+              <textarea v-model="newComment" placeholder="Kommentiere den Beitrag" class="bg-transparent resize-none h-[100px] text-base text-white outline-none w-full" maxlength="200"></textarea>
               <div class="mt-4 flex justify-end items-center">
                 <button @click="handlePostComment" class="w-[154px] h-10 rounded-md bg-homeCard text-black font-semibold">Kommentieren</button>
               </div>
