@@ -4,6 +4,7 @@ import router from "../router";
 import {onBeforeUnmount, onMounted, reactive, ref} from "vue";
 import {Tweet} from "../types/userTweets.ts";
 import {fetchMyTweets} from "../api/apiTweet.ts";
+import loadSpinner from "../components/loadSpinner.vue";
 
 let tweets = reactive<Tweet[]>([]);
 const currentPage = ref(1);
@@ -72,6 +73,7 @@ function navigateToTweetDetails(tweetId) {
             @openTweet="navigateToTweetDetails"
         />
       </div>
+      <loadSpinner v-if="isLoading" class="pt-10"/>
     </div>
   </div>
 </template>
