@@ -104,7 +104,7 @@ const handleLikeCommentToggle = async (comment) => {
                     <h2 class="text-white font-medium">{{comment.user.full_name}}</h2>
                     <p class="text-gray-400 text-xs pl-4">{{ comment.created_at }}</p>
                   </div>
-                  <p class="text-white text-sm mt-2">{{ comment.body }}</p>
+                  <p class="text-white text-sm mt-2 break-words w-[640px]">{{ comment.body }}</p>
 
                   <div class="flex flex-row text-sm mt-4">
                     <div class="flex flex-row items-center pr-14">
