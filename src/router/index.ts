@@ -2,7 +2,8 @@ import {createRouter, createWebHistory} from 'vue-router';
 import homeView from "../views/homeView.vue";
 import loginView from "../views/loginView.vue";
 import settingsView from "../views/settingsView.vue";
-import TweetDetails from "../views/tweetView.vue";
+import tweetDetails from "../views/tweetView.vue";
+import myTweetsView from "../views/myTweetsView.vue";
 
 const routes = [
     {
@@ -14,8 +15,14 @@ const routes = [
     {
         path: '/tweet/:id',
         name: 'TweetDetails',
-        component: TweetDetails,
+        component: tweetDetails,
         props: true
+    },
+
+    {
+        path: '/myTweets',
+        name: 'myTweets',
+        component: myTweetsView
     },
 
     {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import {onMounted, ref} from "vue";
-import {fetchTweetDetails, postComment, toggleLikeComment, toggleLikeTweet} from "../api/apiTweet.ts";
+import {fetchTweetDetails, postComment, toggleLikeComment} from "../api/apiTweet.ts";
 import {useRoute} from "vue-router";
 import {TweetDetail} from "../types/tweetDetails.ts";
 import tweetContent from "../components/tweetContent.vue";
@@ -17,7 +17,7 @@ onMounted(async () => {
 
 const handlePostComment = async () => {
   if (!newComment.value.trim()) {
-    //Hier könnte man noch ein Error raushauen dass das Textfeld leer ist
+    //Hier könnte man noch ein Error heraushauen, dass das Textfeld leer ist
     return;
   }
   console.log("Posting comment:", newComment.value); // Debug log

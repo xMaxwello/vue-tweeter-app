@@ -1,11 +1,21 @@
 import axios from 'axios';
 import {apiConfig, apiUrl} from "./apiConfig";
-import Tweet from "../types/userTweets.ts";
-import {TweetDetail} from "../types/tweetDetails.ts";
+import { Tweet } from "../types/userTweets.ts";
+import { TweetDetail } from "../types/tweetDetails.ts";
 
 const fetchTweets = async (page: number):Promise<Tweet[] | null> => {
     if(page != null && page != 0){
         const res = await axios.get(`${apiUrl}/tweets?page=${page}`,apiConfig);
+        if(res.status == 200){
+            return res.data.data;
+        }
+    }
+    return null;
+}
+
+const fetchMyTweets = async (page: number):Promise<Tweet[] | null> => {
+    if(page != null && page != 0){
+        const res = await axios.get(`${apiUrl}/home?page=${page}`,apiConfig);
         if(res.status == 200){
             return res.data.data;
         }
@@ -19,6 +29,26 @@ const fetchTweetDetails = async (id: number): Promise<TweetDetail | null> => {
         if (response.status === 200) {
             return response.data.data as TweetDetail;
         }
+    }
+    return null;
+}
+
+const postTweet = async (body: string,image: File | null):Promise<Tweet|null> => {
+    const formData = new FormData();
+    formData.append('body', body);
+    if (image) {
+        formData.append('image', image);
+    }
+    const res =
+        await axios.post(`${apiUrl}/tweets`, formData, {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Accept': 'application/json'
+            },
+        });
+    if(res.status === 201) {
+        return res.data.data;
     }
     return null;
 }
@@ -54,8 +84,10 @@ const toggleLikeComment = async (id:number):Promise<boolean|null> => {
 
 export {
     fetchTweets,
+    fetchMyTweets,
+    fetchTweetDetails,
+    postTweet,
+    postComment,
     toggleLikeTweet,
     toggleLikeComment,
-    fetchTweetDetails,
-    postComment,
 }

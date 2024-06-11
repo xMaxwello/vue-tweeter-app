@@ -76,6 +76,7 @@ function navigateToTweetDetails(tweetId) {
         <tweetContent
             :id="tweet.id"
             :profilePicURL="tweet.user.avatar_url"
+            :imgURL="tweet.imageUrl"
             :name="tweet.user.full_name"
             :time="tweet.created_at"
             :text="tweet.body"

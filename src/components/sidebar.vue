@@ -39,7 +39,7 @@ const signOut = () => {
 
     <nav>
       <router-link to="/home" class="block py-2.5 px-4 rounded-l-[10px] transition duration-200 hover:bg-blue-800">Home</router-link>
-      <router-link to="" class="block py-2.5 px-4 rounded-l-[10px] transition duration-200 hover:bg-blue-800">Meine Beiträge</router-link>
+      <router-link to="/myTweets" class="block py-2.5 px-4 rounded-l-[10px] transition duration-200 hover:bg-blue-800">Meine Beiträge</router-link>
       <router-link to="/settings" class="block py-2.5 px-4 rounded-l-[10px] transition duration-200 hover:bg-blue-800">Einstellungen</router-link>
       <button @click="signOut" class="block py-2.5 px-4 rounded-l-[10px] transition duration-200 hover:bg-blue-800">Abmelden</button>
     </nav>
