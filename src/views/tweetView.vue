@@ -59,6 +59,7 @@ const handleLikeCommentToggle = async (comment) => {
 
           <tweetContent
               :id="tweetDetail.id"
+              :imgURL="tweetDetail.image_url"
               :profilePicURL="tweetDetail.user.avatar_url"
               :name="tweetDetail.user.full_name"
               :time="tweetDetail.created_at"

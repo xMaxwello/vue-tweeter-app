@@ -71,7 +71,7 @@ const handleLikeToggle = async () => {
           <p class="text-gray-400 text-xs pl-4">{{ time }}</p>
         </div>
         <p class="text-white text-sm mt-2">{{ text }}</p>
-        <img v-if="imgURL != '' && imgURL != null" :src="imgURL" alt="Anhang">
+        <img v-if="imgURL" :src="imgURL" alt="Anhang" class="mt-4 rounded-md">
         <div class="flex flex-row text-sm mt-4">
           <div class="flex flex-row items-center pr-4">
             <button @click="handleLikeToggle">

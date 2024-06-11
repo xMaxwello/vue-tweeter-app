@@ -1,7 +1,7 @@
 interface Tweet{
     id: number;
     body: string;
-    imageUrl: string;
+    image_url: string;
     user: User;
     is_liked: boolean;
     likes_count: number;
