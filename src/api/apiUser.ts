@@ -21,6 +21,20 @@ const getAuthenticatedUser = async () => {
     }
 }
 
+const searchUser = async (searchQuery:string) => {
+    if(searchQuery != null && searchQuery != ''){
+        const res = await axios.get(`${apiUrl}/users/following?search=${searchQuery}`,apiConfig);
+        if(res.status == 200){
+            return res.data.data;
+        }
+    }
+    return null;
+}
+const followUser = async (id: Number) => {
+    const res = await axios.post(`${apiUrl}/users/${id}/following`,apiConfig);
+    return res.status == 200;
+}
+
 const updateMyAccount = async (
     firstName: string|null,
     lastName: string|null,
@@ -104,6 +118,8 @@ const deleteMyProfilePicture = async () => {
 
 export {
     getAuthenticatedUser,
+    searchUser,
+    followUser,
     updateMyAccount,
     updateMyProfilePicture,
     deleteMyProfilePicture,

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import {toggleLikeTweet} from "../api/apiTweet.ts";
 import {ref} from "vue";
 

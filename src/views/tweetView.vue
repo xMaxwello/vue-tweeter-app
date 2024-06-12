@@ -79,7 +79,9 @@ const handleLikeCommentToggle = async (comment) => {
             <div class="flex flex-col flex-grow pl-4">
               <textarea v-model="newComment" placeholder="Kommentiere den Beitrag" class="bg-transparent resize-none h-[100px] text-base text-white outline-none w-full" maxlength="200"></textarea>
               <div class="mt-4 flex justify-end items-center">
-                <button @click="handlePostComment" class="w-[154px] h-10 rounded-md bg-homeCard text-black font-semibold">Kommentieren</button>
+                <button :disabled="!newComment.trim()"
+                        :class="{'bg-blue-300': !newComment.trim(), 'bg-homeCard': newComment.trim()}"
+                        @click="handlePostComment" class="w-[154px] h-10 rounded-md text-black font-semibold">Kommentieren</button>
               </div>
             </div>
           </div>

@@ -78,7 +78,11 @@ const handlePostTweet = async () => {
             <span class="text-base">Anhang</span>
           </button>
         </div>
-        <button @click="handlePostTweet" class="w-[120px] h-10 rounded-md bg-homeCard text-black font-semibold">Tweet</button>
+        <button :disabled="!tweetText.trim()"
+                :class="{'bg-blue-300': !tweetText.trim(), 'bg-homeCard': tweetText.trim()}"
+                @click="handlePostTweet" class="w-[120px] h-10 rounded-md text-black font-semibold">
+          Tweet
+        </button>
       </div>
     </div>
   </div>
