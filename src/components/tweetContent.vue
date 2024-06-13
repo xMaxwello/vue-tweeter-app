@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {toggleLikeTweet} from "../api/apiTweet.ts";
-import {ref} from "vue";
+import {computed, ref} from "vue";
+import {useRoute} from "vue-router";
 
 
 const props = defineProps({
@@ -39,6 +40,9 @@ const props = defineProps({
     }
 );
 
+const route = useRoute();
+const isTweetView = computed(() => route.name === 'TweetView');
+
 const liked = ref(props.isLiked);
 const likesCount = ref(props.likes);
 
@@ -69,10 +73,10 @@ const handleLikeToggle = async () => {
           <h2 class="text-white font-medium">{{ name }}</h2>
           <p class="text-gray-400 text-xs pl-4">{{ time }}</p>
         </div>
-          <p class="text-white text-sm mt-2 break-words w-[640px]">{{ text }}</p>
+          <p class="text-white text-sm mt-2 break-words max-w-[640px]">{{ text }}</p>
         <img v-if="imgURL" :src="imgURL" alt="Anhang" class="mt-4 rounded-md">
         <div class="flex flex-row text-sm mt-4">
-          <div class="flex flex-row items-center pr-4">
+          <div class="flex flex-row items-center pr-4" :class="{'pr-16': isTweetView}">
             <button @click="handleLikeToggle">
               <svg v-if="liked" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M16.5 3C14.76 3 13.09 3.81 12 5.09C10.91 3.81 9.24 3 7.5 3C4.42 3 2 5.42 2 8.5C2 12.28 5.4 15.36 10.55 20.04L12 21.35L13.45 20.03C18.6 15.36 22 12.28 22 8.5C22 5.42 19.58 3 16.5 3ZM12.1 18.55L12 18.65L11.9 18.55C7.14 14.24 4 11.39 4 8.5C4 6.5 5.5 5 7.5 5C9.04 5 10.54 5.99 11.07 7.36H12.94C13.46 5.99 14.96 5 16.5 5C18.5 5 20 6.5 20 8.5C20 11.39 16.86 14.24 12.1 18.55Z" fill="url(#paint0_linear_36_2436)"/>

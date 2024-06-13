@@ -88,10 +88,10 @@ const handleLikeCommentToggle = async (comment) => {
 
 
           <!-- Comments Section -->
-          <div v-if="tweetDetail.comments_count != 0">
             <hr class="w-full my-4 border-white border-opacity-10"/>
             <div>
-              <h1 v-if="tweetDetail.comments_count <= 1" class="text-white"> 1 Kommentar</h1>
+              <h1 v-if="tweetDetail.comments_count == 0" class="text-white"> Es wurde noch kein Kommentar gepostet</h1>
+              <h1 v-else-if="tweetDetail.comments_count == 1" class="text-white"> 1 Kommentar</h1>
               <h1 v-else class="text-white">{{tweetDetail.comments_count}} Kommentare</h1>
             </div>
             <div v-for="comment in tweetDetail.comments" :key="comment.id">
@@ -136,6 +136,5 @@ const handleLikeCommentToggle = async (comment) => {
         </div>
       </div>
     </div>
-  </div>
 </template>
 
