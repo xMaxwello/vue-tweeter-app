@@ -30,10 +30,11 @@ const searchUser = async (searchQuery:string) => {
     }
     return null;
 }
-const followUser = async (id: Number) => {
-    const res = await axios.post(`${apiUrl}/users/${id}/following`,apiConfig);
-    return res.status == 200;
+const followUser = async (userId: number) => {
+        const res = await axios.post(`${apiUrl}/users/${userId}/following`, {}, apiConfig);
+        return res.status === 200;
 }
+
 
 const updateMyAccount = async (
     firstName: string|null,

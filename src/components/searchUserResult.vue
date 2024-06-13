@@ -11,15 +11,17 @@ const handleFollow = async (userId: number) => {
   try {
     const success = await followUser(userId);
     if (success) {
-      const user = props.users.find(user => user.id === userId);
-      if (user) {
-        user.is_following = !user.is_following;
+      const userIndex = props.users.findIndex(u => u.id === userId);
+      if (userIndex !== -1) {
+        props.users[userIndex].is_following = !props.users[userIndex].is_following;
+        props.users = [...props.users];
       }
     }
   } catch (error) {
     console.error('Failed to follow/unfollow:', error);
   }
 };
+
 </script>
 
 <template>
@@ -30,8 +32,8 @@ const handleFollow = async (userId: number) => {
         <div v-if="!user.avatar_url" class="w-[40px] h-[40px] mr-4 bg-white rounded-full"></div>
         <h1 class="pl-4 text-white">{{ user.full_name }}</h1>
       </div>
-      <button @click="() => handleFollow(user.id)" class="w-[120px] h-10 rounded-md bg-homeCard text-black font-semibold">
-        Folgen
+      <button @click="() => handleFollow(user.id)" :class="{'bg-homeCard': user.is_following, 'border-homeCard , border-2 , text-white': !user.is_following}" class="w-[120px] h-10 rounded-md text-black font-semibold">
+        {{ user.is_following ? 'Gefolgt' : 'Folgen' }}
       </button>
     </div>
   </div>

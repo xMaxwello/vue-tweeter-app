@@ -6,7 +6,7 @@ import {postTweet} from "../api/apiTweet.ts";
 
 const myAccountStore = useMyAccountStore();
 const myAccount = ref<MyAccount|null>(myAccountStore.getMyAccount());
-const profilePicture = ref(myAccount.value?.avatarUrl);
+const profilePicture = ref(myAccount.value?.avatar_url);
 const tweetText = ref('');
 const fileInput = ref('');
 const selectedImage = ref<File | null>(null);

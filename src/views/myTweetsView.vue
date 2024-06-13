@@ -54,7 +54,7 @@ function navigateToTweetDetails(tweetId) {
 </script>
 
 <template>
-  <div class="flex justify-center pt-24">
+  <div class="flex justify-center py-24">
     <div class="w-[751px] h-auto py-5 px-5 bg-homeCard bg-opacity-5 rounded-[10px]">
       <div class="w-full flex justify-between items-center">
         <h1 class="text-white text-base font-medium">Meine Beiträge</h1>

@@ -8,7 +8,7 @@ import router from "../router";
 
 const myAccountStore = useMyAccountStore();
 const myAccount = ref<MyAccount|null>(myAccountStore.getMyAccount());
-const profilePicture = ref(myAccount.value?.avatarUrl);
+const profilePicture = ref(myAccount.value?.avatar_url);
 const firstName = ref(myAccount.value?.firstName);
 const lastName = ref(myAccount.value?.lastName);
 const email = ref(myAccount.value?.email);
@@ -22,7 +22,7 @@ onBeforeMount(async () => {
   if(res){
     myAccountStore.setMyAccount(res);
     myAccount.value = myAccountStore.getMyAccount();
-    profilePicture.value = myAccount.value?.avatarUrl;
+    profilePicture.value = myAccount.value?.avatar_url;
     firstName.value = myAccount.value?.firstName;
     lastName.value = myAccount.value?.lastName;
     email.value = myAccount.value?.email;
