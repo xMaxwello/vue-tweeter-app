@@ -3,7 +3,7 @@ import homeView from "../views/homeView.vue";
 import loginView from "../views/loginView.vue";
 import settingsView from "../views/settingsView.vue";
 import tweetView from "../views/tweetView.vue";
-import myTweetsView from "../views/myTweetsView.vue";
+import myProfileView from "../views/myProfileView.vue";
 
 const routes = [
     {
@@ -20,9 +20,9 @@ const routes = [
     },
 
     {
-        path: '/myTweets',
-        name: 'myTweets',
-        component: myTweetsView
+        path: '/myProfile',
+        name: 'myProfile',
+        component: myProfileView
     },
 
     {

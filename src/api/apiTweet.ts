@@ -23,6 +23,16 @@ const fetchMyTweets = async (page: number):Promise<Tweet[] | null> => {
     return null;
 }
 
+const fetchLikedTweets = async (page: number):Promise<boolean|null> => {
+    if(page != null){
+        const res = await axios.get(`${apiUrl}/home?page=${page}`,apiConfig)
+        if(res.status == 200){
+            return res.data.data;
+        }
+    }
+    return null;
+}
+
 const fetchTweetDetails = async (id: number): Promise<TweetDetail | null> => {
     if(id != null) {
         const response = await axios.get(`${apiUrl}/tweets/${id}`, apiConfig);
@@ -85,6 +95,7 @@ const toggleLikeComment = async (id:number):Promise<boolean|null> => {
 export {
     fetchTweets,
     fetchMyTweets,
+    fetchLikedTweets,
     fetchTweetDetails,
     postTweet,
     postComment,
