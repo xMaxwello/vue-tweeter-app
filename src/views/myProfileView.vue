@@ -1,16 +1,36 @@
 <script setup lang="ts">
 import tweetContent from "../components/tweetContent.vue";
 import router from "../router";
-import {onBeforeUnmount, onMounted, reactive, ref} from "vue";
+import {onBeforeMount, onBeforeUnmount, onMounted, reactive, ref} from "vue";
 import {Tweet} from "../types/userTweets.ts";
 import {fetchLikedTweets, fetchMyTweets} from "../api/apiTweet.ts";
 import loadSpinner from "../components/loadSpinner.vue";
+import {useMyAccountStore} from "../stores/myAccountStore.ts";
+import MyAccount from "../types/myAccount.ts";
+import {getAuthenticatedUser} from "../api/apiUser.ts";
 
 let tweets = reactive<Tweet[]>([]);
 const currentPage = ref(1);
 const isLoading = ref(false);
 const hasMoreTweets = ref(true);
-const viewMode = ref('posts'); // 'posts' or 'likes'
+const viewMode = ref('posts');
+const myAccountStore = useMyAccountStore();
+const myAccount = ref<MyAccount|null>(myAccountStore.getMyAccount());
+const profilePicture = ref(myAccount.value?.avatar_url);
+const fullName = ref(myAccount.value?.firstName);
+
+onBeforeMount(async () => {
+  const res = await getAuthenticatedUser();
+  if(res){
+    myAccountStore.setMyAccount(res);
+    myAccount.value = myAccountStore.getMyAccount();
+    profilePicture.value = myAccount.value?.avatar_url;
+    fullName.value = myAccount.value?.full_name;
+  }
+  if(!myAccountStore.isMyAccountAuth){
+    await router.push("/login");
+  }
+});
 
 const loadTweets = async (mode = 'posts') => {
   if (isLoading.value || !hasMoreTweets.value) return;
@@ -68,6 +88,9 @@ function handleScroll() {
 <template>
   <div class="flex justify-center pt-24 pb-10">
     <div class="w-full max-w-[751px] h-auto py-5 px-5 bg-homeCard bg-opacity-5 rounded-[10px]">
+      <img class="w-[100px] h-[100px] rounded-full" v-if="profilePicture" :src="profilePicture" alt="Profile Picture">
+      <div v-if="!profilePicture" class="w-[100px] h-[100px] flex-none bg-white rounded-full" />
+      <h1 class="pt-4 text-white text-xl font-semibold">{{ fullName }}</h1>
 
 
     </div>
