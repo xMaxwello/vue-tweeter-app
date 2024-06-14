@@ -3,7 +3,10 @@ export default {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      translate: ['responsive', 'hover', 'focus', 'group-hover', 'active'],
+      translate: {
+        'full': '100%',
+        '-full': '-100%'
+      },
       fontFamily: {
         'poppins': 'Poppins, sans-serif',
       },

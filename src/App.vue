@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import {computed, ref} from 'vue';
 import { useRoute } from 'vue-router';
 import Sidebar from './components/sidebar.vue';
 import bannerComponent from "./components/bannerComponent.vue";
@@ -8,14 +8,24 @@ const route = useRoute();
 
 const isLoginRoute = computed(() => {
   return route.path === '/login';
-});</script>
+});
+
+const isSidebarOpen = ref(false);
+
+function toggleSidebar() {
+  isSidebarOpen.value = !isSidebarOpen.value;
+}
+</script>
 
 <template>
   <div v-if="isLoginRoute" >
     <RouterView />
   </div>
 
-  <bannerComponent/>
+  <bannerComponent class="block md:hidden" @toggle-sidebar="toggleSidebar"/>
+  <div v-show="isSidebarOpen" class="z-10 pr-60 block md:hidden">
+    <Sidebar />
+  </div>
 
   <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 min-h-screen">
     <div class="hidden md:block md:col-span-1">
