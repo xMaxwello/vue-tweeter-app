@@ -73,7 +73,9 @@ const handleLikeToggle = async () => {
           <h2 class="text-white font-medium">{{ name }}</h2>
           <p class="text-gray-400 text-xs pl-4">{{ time }}</p>
         </div>
-          <p class="text-white text-sm mt-2 break-words max-w-[640px]">{{ text }}</p>
+        <div class=" w-full max-w-[610px]">
+          <p class="text-white text-sm mt-2 break-words">{{ text }}</p>
+        </div>
         <img v-if="imgURL" :src="imgURL" alt="Anhang" class="mt-4 rounded-md">
         <div class="flex flex-row text-sm mt-4">
           <div class="flex flex-row items-center pr-4" :class="{'pr-16': isTweetView}">

@@ -46,7 +46,7 @@ const handleLikeCommentToggle = async (comment) => {
 <template>
   <div v-if="tweetDetail">
     <div class="flex justify-center py-24">
-      <div class="w-[751px] h-auto pt-3 pb-4 px-5 bg-homeCard bg-opacity-5 rounded-[10px]">
+      <div class="w-full max-w-[751px] h-auto pt-3 pb-4 px-5 bg-homeCard bg-opacity-5 rounded-[10px]">
         <div class="w-full flex flex-col">
           <div class="flex justify-start items-center">
             <button @click="$router.push('/home')" class="text-white text-base font-medium flex pt-2 pb-1 items-center">

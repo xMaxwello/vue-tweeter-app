@@ -32,7 +32,7 @@ const signOut = () => {
 </script>
 
 <template>
-  <div class="flex flex-col text-white w-64 h-screen space-y-10 space-x-10 py-7 pl-2 pt-8 sticky inset-y-0 transform border-r-2 border-gray-500">
+  <div class="flex flex-col text-white w-64 h-screen space-y-10 space-x-10 py-7 pl-2 pt-8 left-60 sticky inset-y-0 transform border-r-2 border-gray-500">
     <router-link to="home" class="text-white flex items-center space-x-2 px-12">
       <img src="../assets/Logoreanmo.svg" alt="Reanmo">
     </router-link>

@@ -145,7 +145,7 @@ const handleProfileEmail = async () => {
 
 <template>
   <div class="flex justify-center pt-24">
-    <div class="w-[751px] h-auto py-5 px-5 bg-homeCard bg-opacity-5 rounded-[10px]">
+    <div class="w-full w-max-[751px] h-auto py-5 px-5 bg-homeCard bg-opacity-5 rounded-[10px]">
       <div class="w-full flex justify-between items-center">
         <h1 class="text-white text-base font-medium">Einstellungen</h1>
       </div>
@@ -167,22 +167,22 @@ const handleProfileEmail = async () => {
 
       <div class="w-full flex justify-between items-center text-white py-2">
         <p>Vorname</p>
-        <input v-model="firstName" class="w-[340px] h-[52px]  px-4 bg-homeCard bg-opacity-5 rounded-md" @keydown.enter="handleProfileName" type="text" placeholder="Vorname">
+        <input v-model="firstName" class="w-[280px] sm:w-[340px] h-[52px]  px-4 bg-homeCard bg-opacity-5 rounded-md" @keydown.enter="handleProfileName" type="text" placeholder="Vorname">
       </div>
 
       <div class="w-full flex justify-between items-center text-white py-2">
         <p>Nachname</p>
-        <input v-model="lastName" class="w-[340px] h-[52px] px-4 bg-homeCard bg-opacity-5 rounded-md" type="text" @keydown.enter="handleProfileName" placeholder="Nachname">
+        <input v-model="lastName" class="w-[280px] sm:w-[340px] h-[52px] px-4 bg-homeCard bg-opacity-5 rounded-md" type="text" @keydown.enter="handleProfileName" placeholder="Nachname">
       </div>
 
       <div class="w-full flex justify-between items-center text-white py-2">
         <p>E-Mail</p>
-        <input class="w-[340px] h-[52px] px-4 bg-homeCard bg-opacity-5 rounded-md" type="email" v-model="email" @blur="changeEmail" @keydown.enter="changeEmail" @input="changeEmail">
+        <input class="w-[280px] sm:w-[340px] h-[52px] px-4 bg-homeCard bg-opacity-5 rounded-md" type="email" v-model="email" @blur="changeEmail" @keydown.enter="changeEmail" @input="changeEmail">
       </div>
 
       <div v-if="emailChanged" class="w-full flex justify-between items-center text-white py-2">
         <p>E-Mail wiederholen</p>
-        <input class="w-[340px] h-[52px] px-4 bg-homeCard bg-opacity-5 rounded-md" type="email" v-model="emailConfirmation" @blur="handleProfileEmail" @keydown.enter="handleProfileEmail" >
+        <input class="w-[280px] sm:w-[340px] h-[52px] px-4 bg-homeCard bg-opacity-5 rounded-md" type="email" v-model="emailConfirmation" @blur="handleProfileEmail" @keydown.enter="handleProfileEmail" >
       </div>
 
       <div class="relative">

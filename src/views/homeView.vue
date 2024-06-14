@@ -74,7 +74,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll);
 });
 
-function navigateToTweetDetails(tweetId) {
+function navigateToTweetView(tweetId) {
   router.push({name: 'TweetView', params: {id: tweetId}});
 }
 </script>
@@ -122,7 +122,7 @@ function navigateToTweetDetails(tweetId) {
               :likes="tweet.likes_count"
               :isLiked="tweet.is_liked"
               :comments="tweet.comments_count"
-              @openTweet="navigateToTweetDetails"
+              @openTweet="navigateToTweetView"
           />
         </div>
 
