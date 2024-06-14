@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import Sidebar from './components/sidebar.vue';
+import bannerComponent from "./components/bannerComponent.vue";
 
 const route = useRoute();
 
@@ -13,6 +14,8 @@ const isLoginRoute = computed(() => {
   <div v-if="isLoginRoute" >
     <RouterView />
   </div>
+
+  <bannerComponent/>
 
   <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 min-h-screen">
     <div class="hidden md:block md:col-span-1">
