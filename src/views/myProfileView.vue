@@ -3,7 +3,7 @@ import tweetContent from "../components/tweetContent.vue";
 import router from "../router";
 import {onBeforeMount, onBeforeUnmount, onMounted, reactive, ref} from "vue";
 import {Tweet} from "../types/userTweets.ts";
-import {fetchLikedTweets, fetchMyTweets} from "../api/apiTweet.ts";
+import {fetchMyTweets, fetchTweets} from "../api/apiTweet.ts";
 import loadSpinner from "../components/loadSpinner.vue";
 import {useMyAccountStore} from "../stores/myAccountStore.ts";
 import MyAccount from "../types/myAccount.ts";
@@ -32,29 +32,31 @@ onBeforeMount(async () => {
   }
 });
 
-const loadTweets = async (mode = 'posts') => {
+const loadTweets = async () => {
   if (isLoading.value || !hasMoreTweets.value) return;
 
   isLoading.value = true;
-  let newTweets;
   try {
-    if (mode === 'posts') {
-      newTweets = await fetchMyTweets(currentPage.value);
+    let fetchedTweets;
+    if (viewMode.value === 'posts') {
+      fetchedTweets = await fetchMyTweets(currentPage.value);
     } else {
-      newTweets = await fetchLikedTweets(currentPage.value);
+      fetchedTweets = await fetchTweets(currentPage.value);
+      fetchedTweets = fetchedTweets.filter(tweet => tweet.is_liked);
     }
-    if (newTweets && newTweets.length > 0) {
-      tweets.push(...newTweets.map(tweet => ({ ...tweet })));
+    if (fetchedTweets && fetchedTweets.length > 0) {
+      tweets.push(...fetchedTweets);
       currentPage.value++;
     } else {
       hasMoreTweets.value = false;
     }
   } catch (error) {
-    console.error(`Failed to load ${mode}:`, error);
+    console.error("Failed to load tweets:", error);
   } finally {
     isLoading.value = false;
   }
 };
+
 
 const switchView = (mode) => {
   tweets = reactive([]);
@@ -88,6 +90,10 @@ function handleScroll() {
 <template>
   <div class="flex justify-center pt-24 pb-10">
     <div class="w-full max-w-[751px] h-auto py-5 px-5 bg-homeCard bg-opacity-5 rounded-[10px]">
+      <div class="w-full flex justify-between items-center">
+        <h1 class="text-white text-base font-medium">Mein Profil</h1>
+      </div>
+      <hr class="w-full my-5 border-white border-opacity-10"/>
       <img class="w-[100px] h-[100px] rounded-full" v-if="profilePicture" :src="profilePicture" alt="Profile Picture">
       <div v-if="!profilePicture" class="w-[100px] h-[100px] flex-none bg-white rounded-full" />
       <h1 class="pt-4 text-white text-xl font-semibold">{{ fullName }}</h1>
@@ -99,11 +105,19 @@ function handleScroll() {
   <div class="flex justify-center pb-24">
     <div class="w-full max-w-[751px] h-auto py-5 px-5 bg-homeCard bg-opacity-5 rounded-[10px]">
       <div class="w-full flex justify-around items-center">
-        <button @click="switchView('posts')" class="text-white text-base font-medium">
-          <span>Meine Beiträge</span>
+        <button
+            @click="switchView('posts')"
+            :class="viewMode === 'posts' ? 'border-b-2 border-homeCard' : ''"
+            class="text-white font-medium py-2 px-4 transition-colors duration-200"
+        >
+          Meine Beiträge
         </button>
-        <button @click="switchView('likes')" class="text-white text-base font-medium">
-          <span>Meine Likes</span>
+        <button
+            @click="switchView('likes')"
+            :class="viewMode === 'likes' ? 'border-b-2 border-homeCard' : ''"
+            class="text-white font-medium py-2 px-4 transition-colors duration-200"
+        >
+          Meine Likes
         </button>
       </div>
       <div v-for="tweet in tweets" :key="tweet.id">
