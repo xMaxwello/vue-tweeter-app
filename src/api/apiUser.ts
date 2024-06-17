@@ -1,35 +1,46 @@
 import axios from 'axios';
 import { apiUrl, apiConfig } from "./apiConfig";
-import MyAccount from "../types/myAccount.ts";
+import { MyAccount } from "../types/myAccount";
 import {authError} from "./apiError.ts";
 
 
 
-const getAuthenticatedUser = async () => {
-    const res = await axios.get(`${apiUrl}/auth/profile`,apiConfig)
-    if(res.status ===200){
-        return new MyAccount(
-            res.data.data.id,
-            res.data.data.full_name,
-            res.data.data.avatar_url,
-            res.data.data.first_name,
-            res.data.data.last_name,
-            res.data.data.email,
-            res.data.data.has_two_factor_enabled,
-            res.data.data.permissions
-        );
+const getAuthenticatedUser = async (): Promise<MyAccount | null> => {
+    try {
+        const response = await axios.get(`${apiUrl}/auth/profile`, apiConfig);
+        if (response.status === 200) {
+            return {
+                id: response.data.data.id,
+                full_name: response.data.data.full_name,
+                avatar_url: response.data.data.avatar_url,
+                first_name: response.data.data.first_name,
+                last_name: response.data.data.last_name,
+                email: response.data.data.email,
+                hasTwoFactorEnabled: response.data.data.has_two_factor_enabled,
+                permissions: response.data.data.permissions
+            };
+        }
+        return null;
+    } catch (error) {
+        throw new Error('Failed to fetch user profile');
     }
 }
 
-const searchUser = async (searchQuery:string) => {
-    if(searchQuery != null && searchQuery != ''){
-        const res = await axios.get(`${apiUrl}/users/following?search=${searchQuery}`,apiConfig);
-        if(res.status == 200){
-            return res.data.data;
+const searchUser = async (searchQuery: string): Promise<UserAccount[] | null> => {
+    if (searchQuery) {
+        const response = await axios.get(`${apiUrl}/users/following?search=${searchQuery}`, apiConfig);
+        if (response.status === 200) {
+            return response.data.data.map((user: any) => ({
+                id: user.id,
+                full_name: user.full_name,
+                avatar_url: user.avatar_url,
+                is_following: user.is_following
+            }));
         }
     }
     return null;
 }
+
 const followUser = async (userId: number) => {
         const res = await axios.post(`${apiUrl}/users/${userId}/following`, {}, apiConfig);
         return res.status === 200;
@@ -68,14 +79,14 @@ const updateMyAccount = async (
         });
 
     if (res.status === 200) {
-        return new MyAccount(
+        return (
             res.data.data.id,
             res.data.data.full_name,
             res.data.data.avatar_url,
             res.data.data.first_name,
             res.data.data.last_name,
             res.data.data.email,
-            res.data.data.has_two_factor_enabled,
+            res.data.data.hasTwoFactorEnabled,
             res.data.data.permissions
         );
     }

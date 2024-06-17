@@ -6,7 +6,7 @@ import {Tweet} from "../types/userTweets.ts";
 import {fetchMyTweets, fetchTweets} from "../api/apiTweet.ts";
 import loadSpinner from "../components/loadSpinner.vue";
 import {useMyAccountStore} from "../stores/myAccountStore.ts";
-import MyAccount from "../types/myAccount.ts";
+import {MyAccount} from "../types/myAccount.ts";
 import {getAuthenticatedUser} from "../api/apiUser.ts";
 import generatePFP from "../components/generatePFP.vue";
 
@@ -18,7 +18,7 @@ const viewMode = ref('posts');
 const myAccountStore = useMyAccountStore();
 const myAccount = ref<MyAccount|null>(myAccountStore.getMyAccount());
 const profilePicture = ref(myAccount.value?.avatar_url);
-const fullName = ref(myAccount.value?.firstName);
+const fullName = ref(myAccount.value?.full_name);
 
 onBeforeMount(async () => {
   const res = await getAuthenticatedUser();
@@ -129,7 +129,7 @@ function handleScroll() {
         </button>
       </div>
       <div v-for="tweet in tweets" :key="tweet.id">
-        <tweetContent @clicked-like='refreshTweets'
+        <tweetContent
             :id="tweet.id"
             :profilePicURL="tweet.user.avatar_url"
             :imgURL="tweet.image_url"
@@ -140,6 +140,7 @@ function handleScroll() {
             :isLiked="tweet.is_liked"
             :comments="tweet.comments_count"
             @openTweet="navigateToTweetDetails"
+            @clickedLike="refreshTweets"
         />
       </div>
       <loadSpinner v-if="isLoading" class="pt-10"/>

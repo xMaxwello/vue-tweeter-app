@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {useMyAccountStore} from "../stores/myAccountStore.ts";
 import {onBeforeMount, ref } from "vue";
-import MyAccount from "../types/myAccount.ts";
+import { MyAccount } from "../types/myAccount.ts";
 import {postTweet} from "../api/apiTweet.ts";
 import {getAuthenticatedUser} from "../api/apiUser.ts";
 import router from "../router";
@@ -66,7 +66,6 @@ const handlePostTweet = async () => {
     }
   } catch (error) {
     console.error('Failed to post tweet:', error);
-    alert("Failed to post tweet. Please try again.");
   }
 };
 </script>

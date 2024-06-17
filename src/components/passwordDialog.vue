@@ -9,7 +9,7 @@ const errorMessage = ref('');
 const confirmMessage = ref('');
 const emits = defineEmits(['close']);
 
-let messageTimeout = null;
+let messageTimeout = 0;
 
 function setMessage(type, message, duration = 5000) {
   if (messageTimeout) {
@@ -62,7 +62,6 @@ const validatePassword = () => {
     setMessage('error', 'Das neue Passwort muss anders als das alte Passwort sein');
     return false;
   }
-
   return true;
 };
 

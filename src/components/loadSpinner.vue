@@ -6,7 +6,7 @@ const isLoading = ref(true)
 
 <template>
   <div class="flex justify-center transition-opacity duration-300" :class="{'opacity-0': !isLoading, 'opacity-100': isLoading}">
-    <div class="loading-circle w-8 h-8 border-4 border-passwordCard border-t-homeCard rounded-full animate-spin"></div>
+    <div class="w-8 h-8 border-4 border-passwordCard border-t-homeCard rounded-full animate-spin"></div>
   </div>
 </template>
 

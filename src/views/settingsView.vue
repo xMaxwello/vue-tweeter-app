@@ -2,7 +2,7 @@
 import {onBeforeMount, ref} from "vue";
 import {deleteMyProfilePicture, getAuthenticatedUser, updateMyAccount, updateMyProfilePicture} from "../api/apiUser.ts";
 import PasswordDialog from "../components/passwordDialog.vue";
-import MyAccount from "../types/myAccount.ts";
+import {MyAccount} from "../types/myAccount.ts";
 import {useMyAccountStore} from "../stores/myAccountStore.ts";
 import router from "../router";
 import generatePFP from "../components/generatePFP.vue";
@@ -10,8 +10,8 @@ import generatePFP from "../components/generatePFP.vue";
 const myAccountStore = useMyAccountStore();
 const myAccount = ref<MyAccount|null>(myAccountStore.getMyAccount());
 const profilePicture = ref(myAccount.value?.avatar_url);
-const firstName = ref(myAccount.value?.firstName);
-const lastName = ref(myAccount.value?.lastName);
+const firstName = ref(myAccount.value?.first_name);
+const lastName = ref(myAccount.value?.last_name);
 const fullName = ref(myAccount.value?.full_name);
 const email = ref(myAccount.value?.email);
 const emailConfirmation = ref(myAccount.value?.email);
@@ -25,8 +25,8 @@ onBeforeMount(async () => {
     myAccountStore.setMyAccount(res);
     myAccount.value = myAccountStore.getMyAccount();
     profilePicture.value = myAccount.value?.avatar_url;
-    firstName.value = myAccount.value?.firstName;
-    lastName.value = myAccount.value?.lastName;
+    firstName.value = myAccount.value?.first_name;
+    lastName.value = myAccount.value?.last_name;
     email.value = myAccount.value?.email;
     emailConfirmation.value = myAccount.value?.email;
   }
@@ -38,6 +38,7 @@ onBeforeMount(async () => {
 const errorMessage = ref('');
 const confirmMessage = ref('');
 let messageTimeout = null;
+
 function setMessage(type, message, duration = 5000) {
   if (messageTimeout) {
     clearTimeout(messageTimeout);
@@ -102,8 +103,8 @@ const handleProfileName = async () => {
     const updatedUser = await updateMyAccount(firstName.value, lastName.value, null, null, null, null, null);
     if (updatedUser) {
       console.log("Name updated successfully:", updatedUser);
-      myAccountStore.setMyAccount(updatedUser);
       setMessage('confirm', 'Name wurde erfolgreich aktualisiert');
+      myAccountStore.setMyAccount(updatedUser);
     }
   } catch (error) {
     console.error('Failed to update name:', error);

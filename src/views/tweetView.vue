@@ -3,18 +3,19 @@
 import {onBeforeMount, onMounted, ref} from "vue";
 import {fetchTweetDetails, postComment, toggleLikeComment} from "../api/apiTweet.ts";
 import {useRoute} from "vue-router";
-import {TweetDetail} from "../types/tweetDetails.ts";
-import tweetContent from "../components/tweetContent.vue";
-import loadSpinner from "../components/loadSpinner.vue";
 import {getAuthenticatedUser} from "../api/apiUser.ts";
-import router from "../router";
 import {useMyAccountStore} from "../stores/myAccountStore.ts";
-import MyAccount from "../types/myAccount.ts";
+import loadSpinner from "../components/loadSpinner.vue";
+import tweetContent from "../components/tweetContent.vue";
+import {MyAccount} from "../types/myAccount.ts";
 import generatePFP from "../components/generatePFP.vue";
+import {Tweet} from "../types/userTweets.ts";
+import router from "../router";
+
 
 const route = useRoute();
 const isLoading = ref(false);
-let tweetDetail = ref<TweetDetail | null>(null);
+let tweet = ref<Tweet | null>(null);
 let newComment = ref('');
 const myAccountStore = useMyAccountStore();
 const myAccount = ref<MyAccount|null>(myAccountStore.getMyAccount());
@@ -38,7 +39,7 @@ onMounted(async () => {
   isLoading.value = true;
   const tweetId = route.params.id;
   try {
-    tweetDetail.value = await fetchTweetDetails(tweetId);
+    tweet.value = await fetchTweetDetails(tweetId);
   } catch (error) {
     console.error("Failed to fetch tweet details:", error);
   } finally {
@@ -55,7 +56,7 @@ const handlePostComment = async () => {
   try {
     const comment = await postComment(route.params.id, newComment.value);
     if (comment) {
-      tweetDetail.value?.comments.unshift(comment);
+      tweet.value?.comments.unshift(comment);
       newComment.value = '';
     }
   } catch (error) {
@@ -91,18 +92,18 @@ const handleLikeCommentToggle = async (comment) => {
             <loadSpinner/>
           </div>
 
-          <div v-if="tweetDetail">
+          <div v-if="tweet">
 
           <tweetContent
-              :id="tweetDetail.id"
-              :imgURL="tweetDetail.image_url"
-              :profilePicURL="tweetDetail.user.avatar_url"
-              :name="tweetDetail.user.full_name"
-              :time="tweetDetail.created_at"
-              :text="tweetDetail.body"
-              :likes="tweetDetail.likes_count"
-              :isLiked="tweetDetail.is_liked"
-              :comments="tweetDetail.comments_count"
+              :id="tweet.id"
+              :imgURL="tweet.image_url"
+              :profilePicURL="tweet.user.avatar_url"
+              :name="tweet.user.full_name"
+              :time="tweet.created_at"
+              :text="tweet.body"
+              :likes="tweet.likes_count"
+              :isLiked="tweet.is_liked"
+              :comments="tweet.comments_count"
           />
 
 
@@ -128,11 +129,11 @@ const handleLikeCommentToggle = async (comment) => {
           <!-- Comments Section -->
             <hr class="w-full my-4 border-white border-opacity-10"/>
             <div>
-              <h1 v-if="tweetDetail.comments_count == 0" class="text-white"> Es wurde noch kein Kommentar gepostet</h1>
-              <h1 v-else-if="tweetDetail.comments_count == 1" class="text-white"> 1 Kommentar</h1>
-              <h1 v-else class="text-white">{{tweetDetail.comments_count}} Kommentare</h1>
+              <h1 v-if="tweet.comments_count == 0" class="text-white"> Es wurde noch kein Kommentar gepostet</h1>
+              <h1 v-else-if="tweet.comments_count == 1" class="text-white"> 1 Kommentar</h1>
+              <h1 v-else class="text-white">{{tweet.comments_count}} Kommentare</h1>
             </div>
-            <div v-for="comment in tweetDetail.comments" :key="comment.id">
+            <div v-for="comment in tweet.comments" :key="comment.id">
               <div class="flex mt-3">
                 <div class="w-[40px] h-[40px] flex-shrink-0">
                   <img class="w-[40px] h-[40px] rounded-full mr-4" v-if="comment.user.avatar_url" :src="comment.user.avatar_url" alt="Profile Picture">

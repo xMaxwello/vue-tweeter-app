@@ -3,9 +3,7 @@ import {toggleLikeTweet} from "../api/apiTweet.ts";
 import {computed, ref} from "vue";
 import {useRoute} from "vue-router";
 import generatePFP from "./generatePFP.vue";
-const emit = defineEmits(['clicked-like']);
-
-
+const emit = defineEmits(['clickedLike', 'openTweet']);
 
 const props = defineProps({
       id:{
@@ -59,7 +57,7 @@ const handleLikeToggle = async () => {
       likesCount.value--;
     }
   }
-  emit('clicked-like')
+  emit('clickedLike')
 }
 
 </script>
@@ -103,7 +101,7 @@ const handleLikeToggle = async () => {
           </div>
 
           <div class="flex flex-row items-center pr-4">
-            <button @click="$emit('openTweet', id)">
+            <button @click="emit('openTweet', id)">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M20 17.17L18.83 16H4V4H20V17.17ZM20 2H4C2.9 2 2 2.9 2 4V16C2 17.1 2.9 18 4 18H18L22 22V4C22 2.9 21.1 2 20 2Z" fill="white"/>
               </svg>
