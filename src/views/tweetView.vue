@@ -10,6 +10,7 @@ import {getAuthenticatedUser} from "../api/apiUser.ts";
 import router from "../router";
 import {useMyAccountStore} from "../stores/myAccountStore.ts";
 import MyAccount from "../types/myAccount.ts";
+import generatePFP from "../components/generatePFP.vue";
 
 const route = useRoute();
 const isLoading = ref(false);
@@ -18,6 +19,7 @@ let newComment = ref('');
 const myAccountStore = useMyAccountStore();
 const myAccount = ref<MyAccount|null>(myAccountStore.getMyAccount());
 const profilePicture = ref(myAccount.value?.avatar_url);
+const fullName = ref(myAccount.value?.full_name);
 
 
 onBeforeMount(async () => {
@@ -108,7 +110,9 @@ const handleLikeCommentToggle = async (comment) => {
           <div class="pt-20 w-full flex">
             <div class="w-[40px] h-[40px] flex-shrink-0">
               <img class="w-[40px] h-[40px] rounded-full" v-if="profilePicture" :src="profilePicture" alt="Profile Picture">
-              <div v-if="!profilePicture" class="w-[40px] h-[40px] bg-white rounded-full"></div>
+              <div v-if="!profilePicture">
+                <generatePFP :full-name="fullName"/>
+              </div>
             </div>
             <div class="flex flex-col flex-grow pl-4">
               <textarea v-model="newComment" placeholder="Kommentiere den Beitrag" class="bg-transparent resize-none h-[100px] text-base text-white outline-none w-full" maxlength="200"></textarea>
@@ -132,7 +136,9 @@ const handleLikeCommentToggle = async (comment) => {
               <div class="flex mt-3">
                 <div class="w-[40px] h-[40px] flex-shrink-0">
                   <img class="w-[40px] h-[40px] rounded-full mr-4" v-if="comment.user.avatar_url" :src="comment.user.avatar_url" alt="Profile Picture">
-                  <div v-if="!comment.user.avatar_url" class="w-[40px] h-[40px] mr-4 bg-white rounded-full"></div>
+                  <div v-if="!comment.user.avatar_url">
+                    <generatePFP :full-name="comment.user.full_name"/>
+                  </div>
                 </div>
 
                 <div class="flex flex-col flex-grow pl-4">

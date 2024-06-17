@@ -5,12 +5,14 @@ import PasswordDialog from "../components/passwordDialog.vue";
 import MyAccount from "../types/myAccount.ts";
 import {useMyAccountStore} from "../stores/myAccountStore.ts";
 import router from "../router";
+import generatePFP from "../components/generatePFP.vue";
 
 const myAccountStore = useMyAccountStore();
 const myAccount = ref<MyAccount|null>(myAccountStore.getMyAccount());
 const profilePicture = ref(myAccount.value?.avatar_url);
 const firstName = ref(myAccount.value?.firstName);
 const lastName = ref(myAccount.value?.lastName);
+const fullName = ref(myAccount.value?.full_name);
 const email = ref(myAccount.value?.email);
 const emailConfirmation = ref(myAccount.value?.email);
 const emailChanged = ref(false);
@@ -159,7 +161,9 @@ const handleProfileEmail = async () => {
               <path d="M9.5 3.205L8.795 2.5L6 5.295L3.205 2.5L2.5 3.205L5.295 6L2.5 8.795L3.205 9.5L6 6.705L8.795 9.5L9.5 8.795L6.705 6L9.5 3.205Z" fill="white"/>
             </svg>
           </button>
-          <div v-if="!profilePicture" class="w-[40px] h-[40px] rounded-full bg-white"/>
+          <div v-if="!profilePicture">
+            <generatePFP :full-name="fullName"/>
+          </div>
         </div>
         <input ref="fileUpload" type="file" class="file:absolute file:right-5 file:top-1 hidden" accept="image/*" @input="handleProfilePictureUpload">
         <button @click="clickProfilePictureUpload" class="text-xs md:text-sm lg:text-base font-semibold text-homeCard">Bild hochladen</button>

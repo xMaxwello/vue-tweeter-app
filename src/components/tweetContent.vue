@@ -2,6 +2,7 @@
 import {toggleLikeTweet} from "../api/apiTweet.ts";
 import {computed, ref} from "vue";
 import {useRoute} from "vue-router";
+import generatePFP from "./generatePFP.vue";
 const emit = defineEmits(['clicked-like']);
 
 
@@ -68,7 +69,9 @@ const handleLikeToggle = async () => {
     <div class="mt-3 w-full flex">
       <div class="w-{40px] h-[40px] flex-shrink-0">
         <img class="w-[40px] h-[40px] object-cover rounded-full mr-4" v-if="profilePicURL" :src="profilePicURL" alt="Profile Picture">
-        <div v-if="!profilePicURL" class="w-[40px] h-[40px] mr-4 bg-white rounded-full"></div>
+        <div v-if="!profilePicURL">
+          <generatePFP :full-name="name"/>
+        </div>
       </div>
 
       <div class="flex flex-col flex-grow pl-4">

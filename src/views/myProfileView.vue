@@ -8,6 +8,7 @@ import loadSpinner from "../components/loadSpinner.vue";
 import {useMyAccountStore} from "../stores/myAccountStore.ts";
 import MyAccount from "../types/myAccount.ts";
 import {getAuthenticatedUser} from "../api/apiUser.ts";
+import generatePFP from "../components/generatePFP.vue";
 
 let tweets = reactive<Tweet[]>([]);
 const currentPage = ref(1);
@@ -100,7 +101,9 @@ function handleScroll() {
       </div>
       <hr class="w-full my-5 border-white border-opacity-10"/>
       <img class="w-[100px] h-[100px] rounded-full" v-if="profilePicture" :src="profilePicture" alt="Profile Picture">
-      <div v-if="!profilePicture" class="w-[100px] h-[100px] flex-none bg-white rounded-full" />
+      <div v-if="!profilePicture">
+        <generatePFP :full-name="fullName" class="w-[100px] h-[100px] text-2xl"/>
+      </div>
       <h1 class="pt-4 text-white text-xl font-semibold">{{ fullName }}</h1>
 
 
