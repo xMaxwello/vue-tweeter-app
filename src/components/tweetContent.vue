@@ -2,6 +2,8 @@
 import {toggleLikeTweet} from "../api/apiTweet.ts";
 import {computed, ref} from "vue";
 import {useRoute} from "vue-router";
+const emit = defineEmits(['clicked-like']);
+
 
 
 const props = defineProps({
@@ -56,6 +58,7 @@ const handleLikeToggle = async () => {
       likesCount.value--;
     }
   }
+  emit('clicked-like')
 }
 
 </script>

@@ -57,6 +57,11 @@ const loadTweets = async () => {
   }
 };
 
+const refreshTweets = async () => {
+  currentPage.value = 1;
+  tweets = reactive<Tweet[]>([]);
+  await loadTweets();
+};
 
 const switchView = (mode) => {
   tweets = reactive([]);
@@ -121,7 +126,7 @@ function handleScroll() {
         </button>
       </div>
       <div v-for="tweet in tweets" :key="tweet.id">
-        <tweetContent
+        <tweetContent @clicked-like='refreshTweets'
             :id="tweet.id"
             :profilePicURL="tweet.user.avatar_url"
             :imgURL="tweet.image_url"

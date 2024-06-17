@@ -59,6 +59,13 @@ const loadTweets = async () => {
 };
 onMounted(loadTweets);
 
+const refreshTweets = async () => {
+  currentPage.value = 1;
+  tweets = reactive<Tweet[]>([]);
+  await loadTweets();
+};
+
+
 function handleScroll() {
   const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
   if (scrollTop + clientHeight >= scrollHeight) {
@@ -109,7 +116,7 @@ function navigateToTweetView(tweetId) {
       </div>
 
       <div v-else>
-        <makeTweet/>
+        <makeTweet @tweet-posted="refreshTweets"/>
 
         <div v-for="tweet in tweets" :key="tweet.id">
           <tweetContent

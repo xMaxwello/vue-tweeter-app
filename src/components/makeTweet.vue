@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import {useMyAccountStore} from "../stores/myAccountStore.ts";
-import {ref} from "vue";
+import {onBeforeMount, ref } from "vue";
 import MyAccount from "../types/myAccount.ts";
 import {postTweet} from "../api/apiTweet.ts";
+import {getAuthenticatedUser} from "../api/apiUser.ts";
+import router from "../router";
 
 const myAccountStore = useMyAccountStore();
 const myAccount = ref<MyAccount|null>(myAccountStore.getMyAccount());
@@ -11,6 +13,20 @@ const tweetText = ref('');
 const fileInput = ref('');
 const selectedImage = ref<File | null>(null);
 const previewImage = ref('');
+const emit = defineEmits(['tweet-posted']);
+
+
+onBeforeMount(async () => {
+  const res = await getAuthenticatedUser();
+  if(res){
+    myAccountStore.setMyAccount(res);
+    myAccount.value = myAccountStore.getMyAccount();
+    profilePicture.value = myAccount.value?.avatar_url;
+  }
+  if(!myAccountStore.isMyAccountAuth){
+    await router.push("/login");
+  }
+});
 
 
 const triggerFileInput = () => {
@@ -46,6 +62,7 @@ const handlePostTweet = async () => {
       previewImage.value = '';
       selectedImage.value = null;
       fileInput.value = '';
+      emit('tweet-posted');
     }
   } catch (error) {
     console.error('Failed to post tweet:', error);

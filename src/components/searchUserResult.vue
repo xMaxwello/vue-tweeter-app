@@ -26,7 +26,10 @@ const handleFollow = async (userId: number) => {
 
 <template>
   <div class="flex flex-col space-y-4">
-    <div v-for="user in users" :key="user.id" class="flex flex-row items-center justify-between py-4">
+    <div v-if="props.users.length === 0" class="flex flex-row items-center justify-center text-white pt-4">
+      <span>Es konnte kein User gefunden werden</span>
+    </div>
+    <div v-for="user in users" :key="user.id" class="flex flex-row items-center justify-between pt-4">
       <div class="flex flex-row items-center">
         <img class="w-[40px] h-[40px] object-cover rounded-full mr-4" v-if="user.avatar_url" :src="user.avatar_url" alt="Profile Picture">
         <div v-if="!user.avatar_url" class="w-[40px] h-[40px] mr-4 bg-white rounded-full"></div>

@@ -149,7 +149,7 @@ const handleProfileEmail = async () => {
       <div class="w-full flex justify-between items-center">
         <h1 class="text-white text-base font-medium">Einstellungen</h1>
       </div>
-      <hr class="w-full mt-4 border-white border-opacity-10"/>
+      <hr class="w-full mt-5 border-white border-opacity-10"/>
 
       <div class="w-full flex justify-between items-center py-4">
         <div class="w-[40px] h-[40px] relative">

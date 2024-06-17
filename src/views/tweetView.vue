@@ -1,18 +1,47 @@
 <script setup lang="ts">
 
-import {onMounted, ref} from "vue";
+import {onBeforeMount, onMounted, ref} from "vue";
 import {fetchTweetDetails, postComment, toggleLikeComment} from "../api/apiTweet.ts";
 import {useRoute} from "vue-router";
 import {TweetDetail} from "../types/tweetDetails.ts";
 import tweetContent from "../components/tweetContent.vue";
+import loadSpinner from "../components/loadSpinner.vue";
+import {getAuthenticatedUser} from "../api/apiUser.ts";
+import router from "../router";
+import {useMyAccountStore} from "../stores/myAccountStore.ts";
+import MyAccount from "../types/myAccount.ts";
 
 const route = useRoute();
+const isLoading = ref(false);
 let tweetDetail = ref<TweetDetail | null>(null);
 let newComment = ref('');
+const myAccountStore = useMyAccountStore();
+const myAccount = ref<MyAccount|null>(myAccountStore.getMyAccount());
+const profilePicture = ref(myAccount.value?.avatar_url);
+
+
+onBeforeMount(async () => {
+  const res = await getAuthenticatedUser();
+  if(res){
+    myAccountStore.setMyAccount(res);
+    myAccount.value = myAccountStore.getMyAccount();
+    profilePicture.value = myAccount.value?.avatar_url;
+  }
+  if(!myAccountStore.isMyAccountAuth){
+    await router.push("/login");
+  }
+});
 
 onMounted(async () => {
+  isLoading.value = true;
   const tweetId = route.params.id;
-  tweetDetail.value = await fetchTweetDetails(tweetId);
+  try {
+    tweetDetail.value = await fetchTweetDetails(tweetId);
+  } catch (error) {
+    console.error("Failed to fetch tweet details:", error);
+  } finally {
+    isLoading.value = false;
+  }
 });
 
 const handlePostComment = async () => {
@@ -44,7 +73,6 @@ const handleLikeCommentToggle = async (comment) => {
 </script>
 
 <template>
-  <div v-if="tweetDetail">
     <div class="flex justify-center py-24">
       <div class="w-full max-w-[751px] h-auto pt-3 pb-4 px-5 bg-homeCard bg-opacity-5 rounded-[10px]">
         <div class="w-full flex flex-col">
@@ -56,6 +84,12 @@ const handleLikeCommentToggle = async (comment) => {
               zurück
             </button>
           </div>
+
+          <div v-if="isLoading" class="w-full flex justify-center pt-10">
+            <loadSpinner/>
+          </div>
+
+          <div v-if="tweetDetail">
 
           <tweetContent
               :id="tweetDetail.id"
@@ -73,8 +107,8 @@ const handleLikeCommentToggle = async (comment) => {
           <!-- Comments Box -->
           <div class="pt-20 w-full flex">
             <div class="w-[40px] h-[40px] flex-shrink-0">
-              <img class="w-[40px] h-[40px] rounded-full" v-if="tweetDetail.user.avatar_url" :src="tweetDetail.user.avatar_url" alt="Profile Picture">
-              <div v-if="!tweetDetail.user.avatar_url" class="w-[40px] h-[40px] bg-white rounded-full"></div>
+              <img class="w-[40px] h-[40px] rounded-full" v-if="profilePicture" :src="profilePicture" alt="Profile Picture">
+              <div v-if="!profilePicture" class="w-[40px] h-[40px] bg-white rounded-full"></div>
             </div>
             <div class="flex flex-col flex-grow pl-4">
               <textarea v-model="newComment" placeholder="Kommentiere den Beitrag" class="bg-transparent resize-none h-[100px] text-base text-white outline-none w-full" maxlength="200"></textarea>
