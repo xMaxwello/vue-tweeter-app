@@ -65,7 +65,6 @@ const handleProfilePictureUpload = async (event) => {
     try {
       const imageUrl = await updateMyProfilePicture(file);
       if (imageUrl) {
-        // Append a timestamp to imageUrl to prevent caching
         profilePicture.value = `${imageUrl}?t=${new Date().getTime()}`;
         setMessage('confirm', 'Profilbild wurde erfolgreich aktualisiert');
         console.log("Profile image updated:", profilePicture.value);

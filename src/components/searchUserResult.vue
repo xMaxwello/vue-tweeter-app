@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
-import UserAccount from '../types/userAccount.ts';
+import {UserAccount} from '../types/userAccount.ts';
 import {followUser} from "../api/apiUser.ts";
 import generatePFP from "./generatePFP.vue";
 

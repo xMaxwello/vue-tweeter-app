@@ -5,3 +5,4 @@ interface UserAccount {
     is_following?: boolean;
 }
 
+export type { UserAccount };

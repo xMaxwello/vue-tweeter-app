@@ -13,7 +13,7 @@ export const useMyAccountStore = defineStore('myAccountStore', () => {
         return myAccount.value;
     }
 
-    function deleteMyAccount() {
+    function logOffMyAccount() {
         myAccount.value = null;
     }
 
@@ -21,5 +21,5 @@ export const useMyAccountStore = defineStore('myAccountStore', () => {
         return myAccount.value !== null;
     }
 
-    return { myAccount, setMyAccount, getMyAccount, deleteMyAccount, isMyAccountAuth };
+    return { myAccount, setMyAccount, getMyAccount, logOffMyAccount, isMyAccountAuth };
 });
